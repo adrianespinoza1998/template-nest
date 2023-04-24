@@ -58,7 +58,17 @@ export class RolsService {
     return await rol.save();
   }
 
-  activateRol(id: number) {
-    return {};
+  async activateRol(id: number) {
+    const rol = await this.rolModel.findOne({
+      where: { idRol: id, isActive: false },
+    });
+
+    if (!rol) {
+      return null;
+    }
+
+    rol.isActive = true;
+
+    return await rol.save();
   }
 }

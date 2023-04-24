@@ -55,7 +55,24 @@ export class RolsController {
   }
 
   @Delete('/:id')
-  deleteRol(@Param('id') id: number) {
-    return this.rolsService.deleteRol(id);
+  async deleteRol(@Param('id') id: number) {
+    const rol = await this.rolsService.deleteRol(id);
+
+    if (!rol) {
+      throw new HttpException(`Rol not found, id: ${id}`, 404);
+    }
+
+    return rol;
+  }
+
+  @Put('/activate/:id')
+  async activateRol(@Param('id') id: number) {
+    const rol = await this.rolsService.activateRol(id);
+
+    if (!rol) {
+      throw new HttpException(`Rol not found, id: ${id}`, 404);
+    }
+
+    return rol;
   }
 }
