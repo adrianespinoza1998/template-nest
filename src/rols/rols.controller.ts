@@ -38,15 +38,18 @@ export class RolsController {
   }
 
   @Post()
-  async createRol(@Body() rol: FindRolDto) {
+  createRol(@Body() rol: FindRolDto) {
     return this.rolsService.createRol(rol);
   }
 
   @Put('/:id')
-  updateRol(@Param('id') id: number, @Body() rol: FindRolDto) {
-    return {
-      id,
-      rol,
-    };
+  async updateRol(@Param('id') id: number, @Body() rol: FindRolDto) {
+    const rolToUpdate = await this.rolsService.updateRol(id, rol);
+
+    if (!rolToUpdate) {
+      throw new HttpException(`Rol not found, id: ${id}`, 404);
+    }
+
+    return rolToUpdate;
   }
 }

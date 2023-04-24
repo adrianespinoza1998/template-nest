@@ -31,8 +31,17 @@ export class RolsService {
     });
   }
 
-  updateRol(id: number, rol: Rol) {
-    return {};
+  async updateRol(id: number, rol: FindRolDto) {
+    const rolToEdit = await this.rolModel.findOne({
+      where: { idRol: id, isActive: true },
+    });
+
+    if (!rolToEdit) {
+      return null;
+    }
+
+    rolToEdit.descripcion = rol.descripcion.toUpperCase();
+    return await rolToEdit.save();
   }
 
   deleteRol(id: number) {
