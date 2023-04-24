@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   Param,
@@ -51,5 +52,10 @@ export class RolsController {
     }
 
     return rolToUpdate;
+  }
+
+  @Delete('/:id')
+  deleteRol(@Param('id') id: number) {
+    return this.rolsService.deleteRol(id);
   }
 }

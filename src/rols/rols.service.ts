@@ -44,8 +44,18 @@ export class RolsService {
     return await rolToEdit.save();
   }
 
-  deleteRol(id: number) {
-    return {};
+  async deleteRol(id: number) {
+    const rol = await this.rolModel.findOne({
+      where: { idRol: id, isActive: true },
+    });
+
+    if (!rol) {
+      return null;
+    }
+
+    rol.isActive = false;
+
+    return await rol.save();
   }
 
   activateRol(id: number) {
