@@ -1,7 +1,9 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { RolsModule } from './rols/rols.module';
 import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { RolsController } from './rols/rols.controller';
 
 @Module({
   imports: [
@@ -24,4 +26,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes(RolsController);
+  }
+}

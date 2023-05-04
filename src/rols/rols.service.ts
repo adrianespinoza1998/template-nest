@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Rol } from './rol.entity';
 import { InjectModel } from '@nestjs/sequelize';
-import { FindRolDto } from './findRol.dto';
+import { FindRolDto } from './dto/findRol.dto';
+import { CreateRolDto } from './dto/createRol.dto';
 
 @Injectable()
 export class RolsService {
@@ -25,13 +26,13 @@ export class RolsService {
     });
   }
 
-  async createRol(rol: FindRolDto) {
+  async createRol(rol: CreateRolDto) {
     return await this.rolModel.create({
       descripcion: rol.descripcion.toUpperCase(),
     });
   }
 
-  async updateRol(id: number, rol: FindRolDto) {
+  async updateRol(id: number, rol: CreateRolDto) {
     const rolToEdit = await this.rolModel.findOne({
       where: { idRol: id, isActive: true },
     });

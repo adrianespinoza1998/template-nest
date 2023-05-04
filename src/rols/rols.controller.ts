@@ -8,10 +8,12 @@ import {
   Post,
   Put,
   Query,
+  Res,
 } from '@nestjs/common';
 import { RolsService } from './rols.service';
-import { FindRolDto } from './findRol.dto';
+import { FindRolDto } from './dto/findRol.dto';
 import { cleanRolDto } from 'src/helpers/rolHelpers';
+import { CreateRolDto } from './dto/createRol.dto';
 
 @Controller('/api/v1/rols')
 export class RolsController {
@@ -39,12 +41,12 @@ export class RolsController {
   }
 
   @Post()
-  createRol(@Body() rol: FindRolDto) {
+  createRol(@Body() rol: CreateRolDto) {
     return this.rolsService.createRol(rol);
   }
 
   @Put('/:id')
-  async updateRol(@Param('id') id: number, @Body() rol: FindRolDto) {
+  async updateRol(@Param('id') id: number, @Body() rol: CreateRolDto) {
     const rolToUpdate = await this.rolsService.updateRol(id, rol);
 
     if (!rolToUpdate) {

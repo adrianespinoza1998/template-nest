@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RolsService } from './rols.service';
 import { getModelToken } from '@nestjs/sequelize';
 import { Rol } from './rol.entity';
-import { FindRolDto } from './findRol.dto';
+import { FindRolDto } from './dto/findRol.dto';
 
 describe('RolsService', () => {
   let service: RolsService;
@@ -59,7 +59,7 @@ describe('RolsService', () => {
     jest.spyOn(service, 'getActiveRols').mockResolvedValue(expectedResults);
 
     const results = await service.getRolsByFilter({
-      descripcion: 'ADMIN',
+      descripcion: 'admin',
     } as FindRolDto);
 
     expect(results).resolves.toEqual(expectedResults);
