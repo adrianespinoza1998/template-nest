@@ -27,6 +27,14 @@ export class RolsService {
   }
 
   async createRol(rol: CreateRolDto) {
+    const rolExist = await this.rolModel.findOne({
+      where: { descripcion: rol.descripcion.toUpperCase() },
+    });
+
+    if (rolExist) {
+      return null;
+    }
+
     return await this.rolModel.create({
       descripcion: rol.descripcion.toUpperCase(),
     });

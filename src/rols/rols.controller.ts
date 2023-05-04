@@ -9,13 +9,11 @@ import {
   Post,
   Put,
   Query,
-  // UseFilters,
 } from '@nestjs/common';
 import { RolsService } from './rols.service';
 import { FindRolDto } from './dto/findRol.dto';
 import { cleanRolDto } from 'src/helpers/rolHelpers';
 import { CreateRolDto } from './dto/createRol.dto';
-// import { HttpExceptionFilter } from 'src/filters/http-exception.filters';
 
 @Controller('/api/v1/rols')
 export class RolsController {
@@ -43,13 +41,17 @@ export class RolsController {
   }
 
   @Post()
-  // @UseFilters(new HttpExceptionFilter())
-  createRol(@Body() rol: CreateRolDto) {
+  async createRol(@Body() rol: CreateRolDto) {
+    const newRol = await this.rolsService.createRol(rol);
+
+    if (!newRol) {
+      throw new HttpException(`Rol already exists`, 400);
+    }
+
     return this.rolsService.createRol(rol);
   }
 
   @Put('/:id')
-  // @UseFilters(new HttpExceptionFilter())
   async updateRol(@Param('id') id: number, @Body() rol: CreateRolDto) {
     const rolToUpdate = await this.rolsService.updateRol(id, rol);
 
