@@ -5,15 +5,17 @@ import {
   Get,
   HttpException,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
-  Res,
+  // UseFilters,
 } from '@nestjs/common';
 import { RolsService } from './rols.service';
 import { FindRolDto } from './dto/findRol.dto';
 import { cleanRolDto } from 'src/helpers/rolHelpers';
 import { CreateRolDto } from './dto/createRol.dto';
+// import { HttpExceptionFilter } from 'src/filters/http-exception.filters';
 
 @Controller('/api/v1/rols')
 export class RolsController {
@@ -30,7 +32,7 @@ export class RolsController {
   }
 
   @Get('/:id')
-  async getRolById(@Param('id') id: number) {
+  async getRolById(@Param('id', ParseIntPipe) id: number) {
     const rol = await this.rolsService.getRolById(id);
 
     if (!rol) {
@@ -41,11 +43,13 @@ export class RolsController {
   }
 
   @Post()
+  // @UseFilters(new HttpExceptionFilter())
   createRol(@Body() rol: CreateRolDto) {
     return this.rolsService.createRol(rol);
   }
 
   @Put('/:id')
+  // @UseFilters(new HttpExceptionFilter())
   async updateRol(@Param('id') id: number, @Body() rol: CreateRolDto) {
     const rolToUpdate = await this.rolsService.updateRol(id, rol);
 
